@@ -1,1 +1,1 @@
-# Zeroshot
+# Zeroshot Gene-compound target gene
