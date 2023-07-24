@@ -4,8 +4,11 @@ import pdb
 from utils import idx2onehot
 import torch.nn.functional as F
 import numpy as np
+import scipy.io as scio
+import scipy,scipy.io
+#dataSplit = scipy.io.loadmat('/data/datacenter/H3C_GPU/projects/yuchen/gzsda-main/gzsda-main/data/XrayBaggage20/dataSplit1.mat')
 class Classifier(nn.Module):
-    def __init__(self, input_dim, num_labels=160):
+    def __init__(self, input_dim, num_labels=130):
         super().__init__()
         self.fc1 = nn.Linear(input_dim, 1280)
         self.relu1 = nn.ReLU()
@@ -16,15 +19,22 @@ class Classifier(nn.Module):
         self.fc4 = nn.Linear(300, num_labels)
         self.logic = nn.LogSoftmax(dim=1)
         self.lossfunction = nn.NLLLoss()
-        np.save('/data/datacenter/H3C_GPU/projects/yuchen/gzsda-main/gzsda-main/data/XrayBaggage20/ccvae_weight_matrix.npy',self.fc3.weight.shape)
+        #np.save('/data/datacenter/H3C_GPU/projects/yuchen/gzsda-main/gzsda-main/data/XrayBaggage20/ccvae_weight_matrix.npy',self.fc3.weight.shape)
     def forward(self, x):
         x = x.type(torch.float32)
         x = self.relu1(self.fc1(x))
         x = self.relu2(self.fc2(x))
         x = self.relu3(self.fc3(x))
+        #print('x:',x)
         x = self.logic(self.fc4(x))
         return x
-
+    #def extract_feature(self, x):
+    #    x = x.type(torch.float32)
+    #    x = self.relu1(self.fc1(x))
+    #    x = self.relu2(self.fc2(x))
+    #    x = self.relu3(self.fc3(x))
+    #    return x
+    
 class VAE(nn.Module):
 
     def __init__(self, encoder_layer_sizes, latent_size, decoder_layer_sizes,
@@ -193,7 +203,7 @@ class Encoder(nn.Module):
     def __init__(self, layer_sizes, latent_size, conditional, num_labels, num_domains):
 
         super().__init__()
-        print('LAAAAORIG',layer_sizes)
+        #print('LAAAAORIG',layer_sizes)
         self.conditional = conditional
         self.num_labels = num_labels
         self.num_domains = num_domains
@@ -202,10 +212,10 @@ class Encoder(nn.Module):
         if num_domains > 0:
             layer_sizes[0] += num_domains
         self.MLP = nn.Sequential()
-        print('LAAAAAAAAA',layer_sizes)
+        #print('LAAAAAAAAA',layer_sizes)
         for i, (in_size, out_size) in enumerate(zip(layer_sizes[:-1], layer_sizes[1:])):
-            print('INNNNNN',in_size)
-            print('out!!!!!!',out_size)
+            #print('INNNNNN',in_size)
+            #print('out!!!!!!',out_size)
             self.MLP.add_module(
                 name="L{:d}".format(i), module=nn.Linear(in_size, out_size))
             self.MLP.add_module(name="A{:d}".format(i), module=nn.ReLU())

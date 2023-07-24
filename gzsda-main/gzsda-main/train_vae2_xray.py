@@ -280,7 +280,7 @@ def main(args):
         decoder_layer_sizes=args.decoder_layer_sizes,
         conditional=args.conditional,
         num_domains = 2,
-        num_labels=160 if args.conditional else 0).to(device)   ######  
+        num_labels=130 if args.conditional else 0).to(device)   ######  
     optimizer = torch.optim.Adam(vae.parameters(), lr=args.learning_rate)
 
     ############################################################
@@ -339,7 +339,7 @@ def main(args):
     #Generating pseudo training samples and train/test a classifier
     ############################################################
     def next_batch(vae,batch_size=64):
-        y = np.random.randint(160,size=batch_size)#######
+        y = np.random.randint(130,size=batch_size)#######
         y = torch.from_numpy(y)        
         pseudo_x = vae.inference(n=batch_size,c=y,d = torch.ones_like(y))
         return pseudo_x, y
@@ -382,12 +382,12 @@ d=torch.zeros(xS.shape[0],dtype=torch.int64).to(device))
 
     #save_generated_data_for_visualisation(datasets,vae,device)
     
-    classifier = Classifier(input_dim=904,num_labels=160).to(device) # train and test a classifier
+    classifier = Classifier(input_dim=904,num_labels=130).to(device) # train and test a classifier
     optimizer_cls = torch.optim.Adam(classifier.parameters(), lr=0.01)
     lr_scheduler_cls = torch.optim.lr_scheduler.StepLR(optimizer_cls,25, gamma=0.1)
     
     num_epochs = 300
-    acc_per_class = np.zeros((num_epochs,160))
+    acc_per_class = np.zeros((num_epochs,130))
     acc = np.zeros((num_epochs,))
     acc_seen = np.zeros((num_epochs,))
     acc_unseen = np.zeros((num_epochs,))
