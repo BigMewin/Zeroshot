@@ -92,9 +92,9 @@ class VAE2(nn.Module):
                  conditional=False, num_labels=0,num_domains=0):
 
         super().__init__()
-        print('encoder_layer_sizes',encoder_layer_sizes)
-        print('latent_size',latent_size)
-        print('decoder_layer_sizes',decoder_layer_sizes)
+        #print('encoder_layer_sizes',encoder_layer_sizes)
+        #print('latent_size',latent_size)
+        #print('decoder_layer_sizes',decoder_layer_sizes)
         if conditional:
             assert num_labels > 0
 

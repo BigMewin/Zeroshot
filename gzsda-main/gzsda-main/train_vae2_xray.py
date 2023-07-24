@@ -386,7 +386,7 @@ d=torch.zeros(xS.shape[0],dtype=torch.int64).to(device))
     optimizer_cls = torch.optim.Adam(classifier.parameters(), lr=0.01)
     lr_scheduler_cls = torch.optim.lr_scheduler.StepLR(optimizer_cls,25, gamma=0.1)
     
-    num_epochs = 300
+    num_epochs = 100
     acc_per_class = np.zeros((num_epochs,130))
     acc = np.zeros((num_epochs,))
     acc_seen = np.zeros((num_epochs,))
@@ -422,7 +422,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--seed", type=int, default=1)
-    parser.add_argument("--epochs", type=int, default=300)
+    parser.add_argument("--epochs", type=int, default=100)
     parser.add_argument("--batch_size", type=int, default=64)
     parser.add_argument("--learning_rate", type=float, default=0.001)
     parser.add_argument("--encoder_layer_sizes", type=list, default=[904, 512])#########
