@@ -161,79 +161,112 @@ class TwoModalDataset(Dataset):
             return self.feature_A[idx,:], np.zeros_like(self.feature_A[idx,:]), self.label_A[idx], np.asarray(np.ones_like(self.label_A[idx]), dtype='int64')  * -1
 
 
-def test_model(model,dataset,dataloader,device,model_type='mlp'):
-    since = time.time()
+def test_model(model,dataset,dataloader,device,model_type,mode):
+    if mode =='top_1':
+        since = time.time()
     
-    num_class = dataset.num_class
-    running_corrects = np.zeros((num_class,))
-    num_sample_per_class = np.zeros((num_class,))
+        num_class = dataset.num_class
+        running_corrects = np.zeros((num_class,))
+        num_sample_per_class = np.zeros((num_class,))
     # Iterate over data.
-    for index, (features,labels) in enumerate(dataloader):
-        features = features.to(device)
-        labels = labels.to(device)
-        with torch.set_grad_enabled(False):
-            if model_type=='knn':
-                preds = model.predict(features)
+        for index, (features,labels) in enumerate(dataloader):
+            features = features.to(device)
+            labels = labels.to(device)
+            with torch.set_grad_enabled(False):
+                if model_type=='knn':
+                    preds = model.predict(features)
+                if model_type=='mlp':
+                    model.eval()
+                    preds = model(features)
+                    preds = preds.cpu().detach().numpy()
+                    labels = labels.cpu().detach().numpy()
+                if index == 0:
+                    outputs_test = preds
+                    labels_test = labels
+                else:
+                    outputs_test = np.concatenate((outputs_test, preds), 0)
+                    labels_test = np.concatenate((labels_test, labels), 0)
             if model_type=='mlp':
-                model.eval()
-                preds = model(features)
-                preds = preds.cpu().detach().numpy()
-                labels = labels.cpu().detach().numpy()
-            if index == 0:
-                outputs_test = preds
-                labels_test = labels
-            else:
-                outputs_test = np.concatenate((outputs_test, preds), 0)
-                labels_test = np.concatenate((labels_test, labels), 0)
-        if model_type=='mlp':
-            preds = np.argmax(outputs_test,1)
-        if model_type=='knn':
-            preds = outputs_test
+                preds = np.argmax(outputs_test,1)
+            if model_type=='knn':
+                preds = outputs_test
    
-    for i in range(len(labels_test)):
-        num_sample_per_class[labels_test[i]] += 1
-        if preds[i]==labels_test[i]:
-            running_corrects[labels_test[i]] += 1
+        for i in range(len(labels_test)):
+            num_sample_per_class[labels_test[i]] += 1
+            if preds[i]==labels_test[i]:
+                running_corrects[labels_test[i]] += 1
 
-    acc_per_class = running_corrects / num_sample_per_class
-    #print('running_corrects',running_corrects)
-    #print(running_corrects.shape)
-    #print('num_sample_per_class',num_sample_per_class)
-    #print(num_sample_per_class.shape)
+        acc_per_class = running_corrects / num_sample_per_class
+
+        lst_acc=[x for x in acc_per_class if not np.isnan(x)]
+        acc = np.mean(lst_acc)
+
     
-    #print('acc_per_class111111',acc_per_class)
-    lst_acc=[x for x in acc_per_class if not np.isnan(x)]
-    acc = np.mean(lst_acc)
-    #print('acc111111',acc)
-    #print('dataset.unseenClass_B',dataset.unseenClass_B)
-    
-    #print('acc_per_class[dataset.unseenClass_B==0]',acc_per_class)
-    #print(acc_per_class.shape)
-    #print('dataset.unseenClass_B',dataset.unseenClass_B)
-    #print((dataset.unseenClass_B).shape)
-    #print('acc_per_class[dataset.unseenClass_B==1]',acc_per_class)
-    
-    
-    lst_seen=[x for x in acc_per_class[dataset.unseenClass_B==0] if not np.isnan(x)]
-    lst_unseen=[x for x in acc_per_class[dataset.unseenClass_B==1] if not np.isnan(x)]
-    #print('lst_seen',lst_seen)
-    #print('lstseen',lst_seen)
-    #print('lst_unseen',lst_unseen)
-    
-    #print('bad')
-    #print('acc_per_class',acc_per_class)
-    #print(acc_per_class.shape)
-    #print('dataset',dataset.unseenClass_B==0)
-    #print((dataset.unseenClass_B==0).shape)
-    #print('1111111',acc_per_class[dataset.unseenClass_B==0])
-    acc_seen = np.mean(lst_seen)
+        lst_seen=[x for x in acc_per_class[dataset.unseenClass_B==0] if not np.isnan(x)]
+        lst_unseen=[x for x in acc_per_class[dataset.unseenClass_B==1] if not np.isnan(x)]
+
+        acc_seen = np.mean(lst_seen)
   
-    acc_unseen = np.mean(lst_unseen)
+        acc_unseen = np.mean(lst_unseen)
     
-    time_elapsed = time.time() - since
+        time_elapsed = time.time() - since
     #print('Testing complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
-    print('per-class acc:{:2.4f}, seen acc:{:2.4f}, unseen acc:{:2.4f}'.format(acc,acc_seen,acc_unseen))
-    return acc_per_class,acc,acc_seen,acc_unseen
+        print('per-class acc:{:2.4f}, seen acc:{:2.4f}, unseen acc:{:2.4f}'.format(acc,acc_seen,acc_unseen))
+        return acc_per_class,acc,acc_seen,acc_unseen
+    if mode =='top_10':
+        since = time.time()
+
+        num_class = dataset.num_class
+        running_corrects = np.zeros((num_class,))
+        num_sample_per_class = np.zeros((num_class,))
+    # Iterate over data.
+        for index, (features, labels) in enumerate(dataloader):
+            features = features.to(device)
+            labels = labels.to(device)
+            with torch.set_grad_enabled(False):
+                if model_type == 'knn':
+                    preds = model.predict(features)
+                if model_type == 'mlp':
+                    model.eval()
+                    preds = model(features)
+                    preds = preds.cpu().detach().numpy()
+                    labels = labels.cpu().detach().numpy()
+                    if index == 0:
+                        outputs_test = preds
+                        labels_test = labels
+                    else:
+                        outputs_test = np.concatenate((outputs_test, preds), 0)
+                        labels_test = np.concatenate((labels_test, labels), 0)
+                # Extract the top ten probabilities and corresponding labels for each input sample
+                    top_probs, top_labels = torch.topk(torch.tensor(preds), k=10, dim=1)
+                    top_labels = top_labels.cpu().detach().numpy()
+                # Check if the real label is in the list of top ten labels for each input sample
+                    for i in range(len(labels_test)):
+                        if labels_test[i] in top_labels[i]:
+                        # If the real label is in the list of top ten labels, classify it as correct
+                            running_corrects[labels_test[i]] += 1
+                if model_type == 'knn':
+                    preds = outputs_test
+
+        for i in range(len(labels_test)):
+            num_sample_per_class[labels_test[i]] += 1
+
+        acc_per_class = running_corrects / num_sample_per_class
+
+        lst_acc = [x for x in acc_per_class if not np.isnan(x)]
+        acc = np.mean(lst_acc)
+
+        lst_seen = [x for x in acc_per_class[dataset.unseenClass_B == 0] if not np.isnan(x)]
+        lst_unseen = [x for x in acc_per_class[dataset.unseenClass_B == 1] if not np.isnan(x)]
+
+        acc_seen = np.mean(lst_seen)
+
+        acc_unseen = np.mean(lst_unseen)
+
+        time_elapsed = time.time() - since
+    # print('Testing complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
+        print('per-class acc:{:2.4f}, seen acc:{:2.4f}, unseen acc:{:2.4f}'.format(acc, acc_seen, acc_unseen))
+        return acc_per_class, acc, acc_seen, acc_unseen
 
 def main(args):
 
@@ -404,15 +437,24 @@ d=torch.zeros(xS.shape[0],dtype=torch.int64).to(device))
             xtrain = torch.cat((xS,xT,recon_xS,recon_xT),dim=0)
             ytrain = torch.cat((yS,yT,yS,yT),dim=0)
             output = classifier(xtrain)
+            #print('xtrain',xtrain)
+            #print('xtrain.shape',xtrain.shape)            
             loss_cls = classifier.lossfunction(output, ytrain)
             optimizer_cls.zero_grad()
             loss_cls.backward()
             optimizer_cls.step()
         lr_scheduler_cls.step()
         acc_per_class[epoch,],acc[epoch],acc_seen[epoch],acc_unseen[epoch] = \
-                test_model(classifier, datasets['test'], data_loaders['test'],device,model_type='mlp')
+                test_model(classifier, datasets['test'], data_loaders['test'],device,'mlp','top_10')
         #print('acc_per_class',acc_per_class)
         #print('acc',acc)
+            # Save the state of the model and associated metadata
+    torch.save({
+            'model_state_dict': classifier.state_dict(),
+            'optimizer_cls': optimizer.state_dict(),
+            'epoch': epoch,
+           # Add any other metadata you want to save
+            }, 'classifier.pth')
         
     scipy.io.savemat('./results/'+args.filename+'.mat',
                      mdict={'acc_per_class':acc_per_class,'acc':acc,

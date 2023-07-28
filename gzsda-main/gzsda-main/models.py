@@ -26,14 +26,15 @@ class Classifier(nn.Module):
         x = self.relu2(self.fc2(x))
         x = self.relu3(self.fc3(x))
         #print('x:',x)
+        #print('xshape',x.shape)
         x = self.logic(self.fc4(x))
         return x
-    #def extract_feature(self, x):
-    #    x = x.type(torch.float32)
-    #    x = self.relu1(self.fc1(x))
-    #    x = self.relu2(self.fc2(x))
-    #    x = self.relu3(self.fc3(x))
-    #    return x
+    def extract_feature(self, x):
+        x = x.type(torch.float32)
+        x = self.relu1(self.fc1(x))
+        x = self.relu2(self.fc2(x))
+        x = self.relu3(self.fc3(x))
+        return x
     
 class VAE(nn.Module):
 
