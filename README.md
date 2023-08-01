@@ -8,5 +8,5 @@
 * Note: You need to change the paths of files to fit your coding environment. Contact me to fetch the "total_new.csv" file
 * Note: Classification Evaluation.ipynb also aims to generate the data for CCVAE training and mAP evaluation
 * Note: Feature Transformation.ipynb aims to generate the data for MLP and SLPP mAP evaluation. DO NOT MIX IT UP WITH Classification Evaluation.ipynb!
-* Note: For cross validation, you need to change the random.seed() in Classification Evaluation.ipynb and Feature Transformation.ipynb. There are three in Classification Evaluation.ipynb and two in Feature Transformation.ipynb. After you changed the random.seed(), redo step 3-6.
+* Note: For cross validation, you need to change the random.seed() in Classification Evaluation.ipynb and Feature Transformation.ipynb. There are three in Classification Evaluation.ipynb and two in Feature Transformation.ipynb. Do not omit any random.seed()! After you changed the random.seed(), redo step 3-6.
 * Supplementary: You can also try to split the data by cell line or by time point. Refer to step 1, 2, and 6 and open the corresponding notebooks 
