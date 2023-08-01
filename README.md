@@ -11,8 +11,8 @@
 * Step 5. run the SECOND and THIRD part of cells in "Run this to set up datasplit and evaluation result.ipynb" after running bash run_xray to get the analyzed accuracy and the transformed the features for mAP evaluation.
 * Step 6. run the ipynb files in "mAP Umap Analysis folder" for mAP evaluation
 * Note:
-  1.You need to change the paths of files to fit your coding environment. Contact me to fetch the "total_new.csv" file
-  2.Classification Evaluation.ipynb also aims to generate the data for CCVAE training and mAP evaluation
-  3.Feature Transformation.ipynb aims to generate the data for MLP and SLPP mAP evaluation. DO NOT MIX IT UP WITH Classification Evaluation.ipynb!
-  4.For cross validation, you need to change the random.seed() in Classification Evaluation.ipynb and Feature Transformation.ipynb. There are three in Classification Evaluation.ipynb and two in Feature Transformation.ipynb. Do not omit any random.seed()! After you changed the random.seed(), redo step 3-6.
+* 1. You need to change the paths of files to fit your coding environment. Contact me to fetch the "total_new.csv" file
+  2. Classification Evaluation.ipynb also aims to generate the data for CCVAE training and mAP evaluation
+  3. Feature Transformation.ipynb aims to generate the data for MLP and SLPP mAP evaluation. DO NOT MIX IT UP WITH Classification Evaluation.ipynb!
+  4. For cross validation, you need to change the random.seed() in Classification Evaluation.ipynb and Feature Transformation.ipynb. There are three in Classification Evaluation.ipynb and two in Feature Transformation.ipynb. Do not omit any random.seed()! After you changed the random.seed(), redo step 3-6.
 * Supplementary: You can also try to split the data by cell line or by time point. Refer to step 1, 2, and 6 and open the corresponding notebooks 
