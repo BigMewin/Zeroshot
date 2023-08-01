@@ -699,20 +699,20 @@ def time_point(modality, time_point):
         if time_point == 24:
             time = "short"
         else:
-            #time = "long"
-            time='ALL_EQUAL'
+            time = "long"
+            #time='ALL_EQUAL'
     elif modality == "orf":
         if time_point == 48:
             time = "short"
         else:
-            #time = "long"
-            time='ALL_EQUAL'
+            time = "long"
+            #time='ALL_EQUAL'
     else:
         if time_point == 96:
             time = "short"
         else:
-            #####time = "long"
-            time='ALL_EQUAL'
+            time = "long"
+            #time='ALL_EQUAL'
 
     return time
 
