@@ -1,4 +1,9 @@
 # Zeroshot Gene-compound target gene
+* This is for gene classification of compound perturbations. This experiment aims to:
+* 1. Apply supervised learning methods for feature transformation to filter out undesired features.
+  2. Reduce the domain gap of domain adaptation problem
+  3. Deal with unlabeled data in target domain in zero-shot domain adaptation problem
+* Please follow the steps below:
 * Step 1. run Feature Transformation.ipynb to generate transformed features
 * Step 2. run Classification Evaluation.ipynb to evaluate the classification accuracy of MLP and SLPP (note: you need to change the parameter 'mode' as 'top_1' or 'top_10' to get the desired result)
 * Step 3. run the FIRST part of cells in "Run this to set up datasplit and evaluation result.ipynb" first in gzsda.main to generate required .mat files
