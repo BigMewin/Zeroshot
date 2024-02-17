@@ -28,7 +28,7 @@ This repository contains code for gene classification of compound perturbations.
 - Run the notebooks in the `mAP Umap Analysis folder` to perform mAP evaluation.
 
 Notes:
-1. Make sure to adjust the file paths to match your coding environment. Contact me to obtain the `total_new.csv` file.
+1. Make sure to adjust the file paths to match your coding environment.
 2. The notebook `Classification Evaluation.ipynb` also generates data for CCVAE training and mAP evaluation.
 3. The notebook `Feature Transformation.ipynb` generates data for MLP and SLPP mAP evaluation. Do not confuse it with `Classification Evaluation.ipynb`!
 4. If you want to perform cross-validation, modify the `random.seed()` values in both `Classification Evaluation.ipynb` and `Feature Transformation.ipynb`. There are three instances in `Classification Evaluation.ipynb` and two in `Feature Transformation.ipynb`. Ensure that you don't skip any `random.seed()` calls. After modifying the `random.seed()` values, repeat steps 3-6.
