@@ -17,7 +17,7 @@ This repository contains code for gene classification of compound perturbations.
 
 ### Step 4: CCVAE and MLP/1-Nearest-Neighbor Evaluation
 - In your terminal, run the command `bash run_xray` to execute CCVAE and MLP/1-Nearest-Neighbor evaluation.
-- Note 1: You may need to manually change the MLP/Nearest-Class-Mean evaluation strategy in the file `train_vae2_xray.py`.
+- Note 1: You may need to manually change the MLP/1-Nearest-Neighbor evaluation strategy in the file `train_vae2_xray.py`.
 - Note 2: Similar to Step 2, adjust the parameter `mode` to `top_1` or `top_10` to obtain the desired results.
 
 ### Step 5: Analyzing Accuracy and Transformed Features
