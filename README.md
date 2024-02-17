@@ -15,8 +15,8 @@ This repository contains code for gene classification of compound perturbations.
 - Run the first part of the cells in the notebook `Run this to set up datasplit and evaluation result.ipynb` located in the `gzsda.main` directory.
 - This step will generate the required `.mat` files for further processing.
 
-### Step 4: CCVAE and MLP/Nearest-Class-Mean Evaluation
-- In your terminal, run the command `bash run_xray` to execute CCVAE and MLP/Nearest-Class-Mean evaluation.
+### Step 4: CCVAE and MLP/1-Nearest-Neighbor Evaluation
+- In your terminal, run the command `bash run_xray` to execute CCVAE and MLP/1-Nearest-Neighbor evaluation.
 - Note 1: You may need to manually change the MLP/Nearest-Class-Mean evaluation strategy in the file `train_vae2_xray.py`.
 - Note 2: Similar to Step 2, adjust the parameter `mode` to `top_1` or `top_10` to obtain the desired results.
 
