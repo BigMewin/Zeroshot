@@ -36,6 +36,6 @@ Notes:
 Supplementary: You can also explore splitting the data by cell line or time point. Refer to steps 1, 2, and 6, and open the corresponding notebooks.
 
 ## Datasets
-- Cellprofiler, Dinov2, and Effnetb0 datasets can be accessed from this link: [https://terabox.com/s/1gwHoxwJsKQ3WBOXU8jYnJw](https://terabox.com/s/1gwHoxwJsKQ3WBOXU8jYnJw)
+- Cellprofiler, Dinov2, and Effnetb0 datasets can be accessed from this link: https://www.terabox.com/sharing/link?surl=gwHoxwJsKQ3WBOXU8jYnJw&path=%2FCPJUMP1
 
 If you have any questions or need further assistance, feel free to contact me.
